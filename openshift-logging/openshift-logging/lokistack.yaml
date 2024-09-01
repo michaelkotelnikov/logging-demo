@@ -1,0 +1,29 @@
+apiVersion: loki.grafana.com/v1
+kind: LokiStack
+metadata:
+  name: lokistack
+  namespace: openshift-logging
+spec:
+  hashRing:
+    type: memberlist
+  limits:
+    global:
+      queries:
+        queryTimeout: 3m
+      retention:
+        days: 1
+  managementState: Managed
+  rules:
+    enabled: true
+  size: 1x.extra-small
+  storage:
+    schemas:
+      - effectiveDate: '2020-10-11'
+        version: v11
+    secret:
+      name: minio-s3
+      type: s3
+      #  storageClassName: gp3-csi
+  storageClassName: ocs-external-storagecluster-ceph-rbd
+  tenants:
+    mode: openshift-logging
